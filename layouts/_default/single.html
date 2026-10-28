@@ -1,0 +1,49 @@
+{{/*
+  Project override of the Stack v2 single-page template.
+
+  Upstream replaces the whole left sidebar with a slim "back home" toolbar as soon as a
+  page renders a table of contents, which leaves About / CV / Gallery and every blog post
+  without the site menu and without the dark-mode switch. Here the navigation is always
+  kept, and the table of contents moves to the right column on wide screens while a
+  collapsible copy is offered inline on narrow ones.
+*/}}
+{{ define "body-class" }}
+    {{ $TOCEnabled := default (default false .Site.Params.article.toc) .Params.toc }}
+    {{- .Scratch.Set "hasTOC" (and (ge (len .TableOfContents) 100) $TOCEnabled) -}}
+    article-page {{ if (.Scratch.Get "hasTOC") }}has-toc{{ end }}
+{{ end }}
+
+{{ define "container-class" }}
+    on-phone--column {{ if .Site.Params.widgets.enabled }}extended{{ else }}compact{{ end }}
+{{ end }}
+
+{{ define "main" }}
+    {{ if (.Scratch.Get "hasTOC") }}
+        <details class="article-toc-inline">
+            <summary>{{ T "article.tableOfContents" }}</summary>
+            <div class="widget--toc">
+                {{ .TableOfContents }}
+            </div>
+        </details>
+    {{ end }}
+
+    {{ partial "article/article.html" . }}
+
+    {{ partial "article/components/related-contents" . }}
+
+    {{ if or (not (isset .Params "comments")) (eq .Params.comments "true")}}
+        {{ partial "comments/include" . }}
+    {{ end }}
+
+    {{ partialCached "footer/footer" . }}
+
+    {{ partialCached "article/components/photoswipe" . }}
+{{ end }}
+
+{{ define "left-sidebar" }}
+    {{ partial "sidebar/left.html" . }}
+{{ end }}
+
+{{ define "right-sidebar" }}
+    {{ partial "sidebar/right.html" . }}
+{{ end }}

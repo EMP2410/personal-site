@@ -1,0 +1,48 @@
+{{/*
+  Project override of the Stack v2 search page.
+
+  Upstream points the search index at the absolute `.Permalink` of the JSON output.
+  When the site is served from a sub-path (https://<host>/<project>/) that absolute URL
+  still points at the production host, so the local preview tried to fetch the index
+  cross-origin and failed. Resolving the path through the link helper keeps the index
+  same-origin in every environment.
+*/}}
+{{ define "body-class" }}template-search{{ end }}
+{{ define "head" }}
+    {{- with .OutputFormats.Get "json" -}}
+        <link rel="preload" href="{{ partial "helper/link.html" "search/index.json" }}" as="fetch" crossorigin="anonymous">
+    {{- end -}}
+{{ end }}
+{{/*
+  The base template renders the right sidebar through `partialCached`, which would reuse
+  the markup of the first rendered page. The search widget is page dependent (it is
+  hidden on this very page), so render the column uncached here.
+*/}}
+{{ define "right-sidebar" }}
+    {{ partial "sidebar/right.html" . }}
+{{ end }}
+{{ define "main" }}
+<form action="{{ partial "helper/link.html" "search/" }}" class="search-form"{{ with .OutputFormats.Get "json" -}} data-json="{{ partial "helper/link.html" "search/index.json" }}"{{- end }}>
+    <p>
+        <label>{{ T "search.title" }}</label>
+        <input name="keyword" placeholder="{{ T `search.placeholder` }}" />
+    </p>
+
+    <button title="{{ T `search.title` }}">
+        {{ partial "helper/icon" "search" }}
+    </button>
+</form>
+
+<h3 class="search-result--title section-title"></h3>
+<div class="search-result--list article-list--compact"></div>
+
+<script>
+    window.searchResultTitleTemplate = "{{ T `search.resultTitle` }}"
+</script>
+
+{{- $opts := dict "minify" hugo.IsProduction "JSXFactory" "createElement" -}}
+{{- $searchScript := resources.Get "ts/search.tsx" | js.Build $opts -}}
+<script type="text/javascript" src="{{ $searchScript.RelPermalink }}" defer></script>
+
+{{ partialCached "footer/footer" . }}
+{{ end }}

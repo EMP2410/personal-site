@@ -1,0 +1,39 @@
+{{- /*
+  Renders a single gallery photo from the page bundle.
+
+  Usage:
+    {{< figure src="lab-1.jpg" caption="Inside the laboratory" alt="..." >}}
+
+  The markup mirrors the theme's image render hook (layouts/_default/_markup/
+  render-image.html) so that the client-side PhotoSwipe lightbox keeps working.
+*/ -}}
+{{- $src := .Get "src" -}}
+{{- $caption := .Get "caption" | default (.Get "alt") -}}
+{{- $alt := .Get "alt" | default $caption -}}
+{{- $image := .Page.Resources.GetMatch $src -}}
+{{- if $image -}}
+    {{- $Permalink := $image.RelPermalink -}}
+    {{- $Width := $image.Width -}}
+    {{- $Height := $image.Height -}}
+    {{- $Srcset := "" -}}
+    {{- if (default true .Page.Site.Params.imageProcessing.content.enabled) -}}
+        {{- $small := $image.Resize "480x" -}}
+        {{- $big := $image.Resize "1024x" -}}
+        {{- $Srcset = printf "%s 480w, %s 1024w" $small.RelPermalink $big.RelPermalink -}}
+    {{- end -}}
+    <figure style="flex-grow: {{ div (mul $image.Width 100) $image.Height }}; flex-basis: {{ div (mul $image.Width 240) $image.Height }}px">
+        <a href="{{ $Permalink }}" data-size="{{ $image.Width }}x{{ $image.Height }}">
+            <img src="{{ $Permalink }}"
+                {{ with $Srcset }}srcset="{{ . }}"{{ end }}
+                width="{{ $Width }}"
+                height="{{ $Height }}"
+                loading="lazy"
+                {{ with $alt }}alt="{{ . }}"{{ end }}>
+        </a>
+        {{ with $caption }}
+        <figcaption>{{ . | markdownify }}</figcaption>
+        {{ end }}
+    </figure>
+{{- else -}}
+    <p><em>Missing image: {{ $src }}</em></p>
+{{- end -}}

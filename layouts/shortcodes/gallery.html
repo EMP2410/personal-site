@@ -1,0 +1,15 @@
+{{- /*
+  Groups a set of photos into a gallery grid.
+
+  Usage:
+    {{< gallery >}}
+      {{< figure src="lab-1.jpg" caption="..." >}}
+      {{< figure src="lab-2.jpg" caption="..." >}}
+    {{< /gallery >}}
+
+  The grid is rendered server-side so the page does not reflow once the
+  theme's gallery script takes over.
+*/ -}}
+<div class="gallery">
+{{- .Inner -}}
+</div>

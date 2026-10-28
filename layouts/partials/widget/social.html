@@ -1,0 +1,20 @@
+{{- /*
+  Custom widget: academic / professional profile links.
+  Data source: data/social.yaml
+  */ -}}
+{{- with hugo.Data.social -}}<section class="widget social">
+    <div class="widget-icon">
+        {{ partial "helper/icon" "external-link" }}
+    </div>
+    <h2 class="widget-title section-title">Contact &amp; Profiles</h2>
+
+    <div class="widget--links">
+        {{ range . }}
+            <a class="social-link" href="{{ .url }}" {{ if strings.HasPrefix .url "http" }}target="_blank" rel="noopener noreferrer"{{ end }}>
+                {{ partial "helper/icon" .icon }}
+                <span>{{ .name }}</span>
+            </a>
+        {{ end }}
+    </div>
+</section>
+{{- end -}}

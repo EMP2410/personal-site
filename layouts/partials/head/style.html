@@ -1,0 +1,16 @@
+{{- /*
+  Stack v2.6.0 still uses the removed `resources.ToCSS` API.
+  Hugo >= v0.153 requires `css.Sass`; this project-level override keeps the
+  theme's original look while compiling on modern Hugo.
+
+  site.scss is the site's own stylesheet and is loaded *after* the theme,
+  so it wins on equal specificity.
+*/ -}}
+{{- $sass := resources.Get "scss/style.scss" -}}
+{{- $style := $sass | css.Sass (dict "outputStyle" "compressed" "targetPath" "css/stack.css") -}}
+<link rel="stylesheet" href="{{ $style.RelPermalink }}">
+
+{{- with resources.Get "scss/site.scss" -}}
+    {{- $site := . | css.Sass (dict "outputStyle" "compressed" "targetPath" "css/site.css") -}}
+    <link rel="stylesheet" href="{{ $site.RelPermalink }}">
+{{- end -}}

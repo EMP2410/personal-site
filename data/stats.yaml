@@ -1,0 +1,13 @@
+# Headline metrics rendered by layouts/partials/widget/stats.html
+
+- value: "940+"
+  label: "Peer-reviewed papers"
+
+- value: "51k+"
+  label: "Citations"
+
+- value: "114"
+  label: "H-index"
+
+- value: "2022–23"
+  label: "Highly Cited Researcher"

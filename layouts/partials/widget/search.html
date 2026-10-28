@@ -1,0 +1,28 @@
+{{/*
+  Project override of the Stack v2 search widget.
+
+  Differences from upstream:
+    * the JSON index is resolved through the link helper so it stays same-origin when
+      the site is served from a sub-path (upstream uses the absolute production URL);
+    * the widget is hidden on the dedicated /search/ page, where the same search box is
+      already rendered in the main column;
+    * on every other page the widget keeps its native form behaviour, so submitting it
+      navigates to /search/?keyword=... and the search page picks the keyword up from
+      the query string.
+*/}}
+{{- $query := first 1 (where .Site.Pages "Layout" "==" "search") -}}
+{{- if and $query (ne .Layout "search") -}}
+    {{- $searchPage := index $query 0 -}}
+    <form action="{{ $searchPage.RelPermalink }}" class="search-form widget" data-json="{{ partial "helper/link.html" "search/index.json" }}">
+        <p>
+            <label>{{ T "search.title" }}</label>
+            <input name="keyword" required placeholder="{{ T `search.placeholder` }}" />
+
+            <button title="{{ T `search.title` }}">
+                {{ partial "helper/icon" "search" }}
+            </button>
+        </p>
+    </form>
+{{- else if not $query -}}
+    {{- warnf "Search page not found. Create a page with layout: search." -}}
+{{- end -}}

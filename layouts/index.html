@@ -1,0 +1,63 @@
+﻿{{ define "main" }}
+    <section class="home-hero">
+        <p class="home-hero__eyebrow">{{ .Params.eyebrow | default "City University of Hong Kong" }}</p>
+        <h1 class="home-hero__title">{{ .Params.hero_title | default .Title }}</h1>
+        {{ with .Params.hero_lede }}
+            <p class="home-hero__lede">{{ . }}</p>
+        {{ end }}
+        {{ with .Params.hero_ctas }}
+            <div class="home-hero__actions">
+                {{ range . }}
+                    <a class="btn {{ if eq .style "primary" }}btn--primary{{ else }}btn--ghost{{ end }}" href="{{ partial "helper/link.html" .url }}">{{ .label }}</a>
+                {{ end }}
+            </div>
+        {{ end }}
+    </section>
+
+    {{ with hugo.Data.stats }}
+        <div class="home-stats">
+            {{ range . }}
+                <div class="home-stat">
+                    <div class="home-stat__value">{{ .value }}</div>
+                    <div class="home-stat__label">{{ .label }}</div>
+                </div>
+            {{ end }}
+        </div>
+    {{ end }}
+
+    {{ with .Content }}
+        <div class="home-intro">{{ . }}</div>
+    {{ end }}
+
+    {{ $posts := where .Site.RegularPages "Section" "blog" }}
+    {{ with $posts }}
+        <div class="home-section__head">
+            <h3 class="section-title">Latest Writing</h3>
+            <a class="home-section__more" href="{{ partial "helper/link.html" "/blog/" }}">All posts &rarr;</a>
+        </div>
+        <section class="article-list--compact">
+            {{ range first 5 . }}
+                {{ partial "article-list/compact" . }}
+            {{ end }}
+        </section>
+    {{ end }}
+
+    {{ $news := where .Site.RegularPages "Section" "news" }}
+    {{ with $news }}
+        <div class="home-section__head">
+            <h3 class="section-title">Latest News</h3>
+            <a class="home-section__more" href="{{ partial "helper/link.html" "/news/" }}">All news &rarr;</a>
+        </div>
+        <section class="article-list--compact">
+            {{ range first 4 . }}
+                {{ partial "article-list/compact" . }}
+            {{ end }}
+        </section>
+    {{ end }}
+
+    {{ partialCached "footer/footer" . }}
+{{ end }}
+
+{{ define "right-sidebar" }}
+    {{ partialCached "sidebar/right.html" . }}
+{{ end }}

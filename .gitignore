@@ -1,0 +1,16 @@
+# Hugo build output
+/public/
+/resources/
+.hugo_build.lock
+
+# Validation tooling
+node_modules/
+_validation/node_modules/
+_validation/*.png
+_validation/*_full.json
+_validation/out_*.json
+_validation/result*.json
+
+# OS noise
+.DS_Store
+Thumbs.db

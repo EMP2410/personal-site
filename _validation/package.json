@@ -1,0 +1,16 @@
+{
+  "name": "personal-site-validation",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Playwright-based acceptance checks for the personal site (run against `hugo server`).",
+  "scripts": {
+    "links": "node verify_a_links.mjs",
+    "contrast": "node verify_b_contrast.mjs && node verify_b2_tertiary.mjs && node verify_d2_elements.mjs",
+    "nav": "node verify_c_nav_toc.mjs && node verify_c2_interact.mjs",
+    "regression": "node verify_e_regression.mjs",
+    "search": "node verify_f_search.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.64.1"
+  }
+}

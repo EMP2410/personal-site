@@ -1,0 +1,502 @@
+/* ==============================================================
+   Yang REN · personal site — custom styles
+   Loaded *after* the Stack theme stylesheet, so it wins on ties.
+   ============================================================== */
+
+/* ---------- 1. Brand palette ---------- */
+:root {
+    --accent-color: #12559e;
+    --accent-color-darker: #0c3f77;
+    --accent-color-text: #ffffff;
+
+    --brand-grad: linear-gradient(135deg, #12559e 0%, #2c7fce 52%, #3ba6c4 100%);
+    --brand-soft: rgba(18, 85, 158, 0.08);
+    --hero-glow: rgba(44, 127, 206, 0.20);
+    --hero-glow-2: rgba(59, 166, 196, 0.16);
+}
+
+:root[data-scheme="dark"] {
+    /* Bright enough to clear WCAG AA on the darkest surface it can land on: the table
+       stripe (#545454) and the card background (#424242). */
+    --accent-color: #a4d2ff;
+    --accent-color-darker: #bcdfff;
+    --accent-color-text: #08111d;
+
+    --card-text-color-tertiary: rgba(255, 255, 255, 0.68);
+
+    --brand-grad: linear-gradient(135deg, #1b4d8a 0%, #2c7fce 55%, #35a0bb 100%);
+    --brand-soft: rgba(164, 210, 255, 0.10);
+    --hero-glow: rgba(63, 169, 196, 0.22);
+    --hero-glow-2: rgba(44, 127, 206, 0.20);
+}
+
+/* The upstream theme ships very light greys that fall below WCAG AA on a light
+   background, and never gives <body> a colour, so inherited text stays pure black
+   in dark mode. Both are corrected here. */
+:root[data-scheme="light"] {
+    --body-text-color: #5b6472;
+    --card-text-color-tertiary: #5f6775;
+}
+
+body {
+    color: var(--card-text-color-main);
+}
+
+::selection {
+    background: var(--accent-color);
+    color: var(--accent-color-text);
+}
+
+/* ---------- 2. Buttons ---------- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    border-radius: 999px;
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1.4;
+    border: 1.5px solid transparent;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease, color 0.22s ease, border-color 0.22s ease;
+}
+
+.btn--primary {
+    background: var(--accent-color);
+    color: var(--accent-color-text);
+    box-shadow: var(--shadow-l2);
+}
+
+.btn--primary:hover {
+    transform: translateY(-2px);
+    background: var(--accent-color-darker);
+    color: var(--accent-color-text);
+    box-shadow: var(--shadow-l3);
+}
+
+.btn--ghost {
+    background: transparent;
+    color: var(--card-text-color-main);
+    border-color: var(--card-separator-color);
+}
+
+.btn--ghost:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
+.btn svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 1.8;
+}
+
+/* ---------- 3. Home hero ---------- */
+.home-hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: 38px 40px;
+    margin-bottom: 22px;
+    border-radius: var(--card-border-radius);
+    background: var(--card-background);
+    box-shadow: var(--shadow-l2);
+}
+
+.home-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background: var(--brand-grad);
+    opacity: 0.07;
+}
+
+.home-hero::after {
+    content: "";
+    position: absolute;
+    right: -140px;
+    top: -170px;
+    width: 460px;
+    height: 460px;
+    z-index: -1;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--hero-glow) 0%, transparent 66%);
+}
+
+.home-hero__eyebrow {
+    margin: 0 0 10px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent-color);
+}
+
+.home-hero__title {
+    margin: 0 0 14px;
+    font-size: 3rem;
+    line-height: 1.16;
+    font-weight: 800;
+    color: var(--card-text-color-main);
+    max-width: 18em;
+}
+
+.home-hero__lede {
+    margin: 0 0 26px;
+    font-size: 1.6rem;
+    line-height: 1.72;
+    color: var(--card-text-color-main);
+    opacity: 0.82;
+    max-width: 44em;
+}
+
+.home-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+@media only screen and (max-width: 700px) {
+    .home-hero {
+        padding: 28px 22px;
+    }
+
+    .home-hero__title {
+        font-size: 2.2rem;
+    }
+
+    .home-hero__lede {
+        font-size: 1.45rem;
+    }
+}
+
+/* ---------- 4. Home stat strip ---------- */
+.home-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 30px;
+}
+
+.home-stat {
+    padding: 20px 14px;
+    text-align: center;
+    border-radius: var(--card-border-radius);
+    background: var(--card-background);
+    box-shadow: var(--shadow-l1);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.home-stat:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-l3);
+}
+
+.home-stat__value {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--accent-color);
+}
+
+.home-stat__label {
+    margin-top: 6px;
+    font-size: 1.2rem;
+    line-height: 1.4;
+    color: var(--card-text-color-tertiary);
+}
+
+@media only screen and (max-width: 700px) {
+    .home-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .home-stat__value {
+        font-size: 2rem;
+    }
+}
+
+/* ---------- 5. Home section headers ---------- */
+.home-section__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 14px;
+    margin: 34px 0 14px;
+}
+
+.home-section__head .section-title {
+    margin: 0;
+}
+
+.home-section__more {
+    flex: none;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--accent-color);
+}
+
+.home-section__more:hover {
+    color: var(--accent-color-darker);
+}
+
+/* ---------- 6. Widget: stats ---------- */
+.widget.stats .widget--stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.widget.stats .stat-cell {
+    padding: 14px 8px;
+    text-align: center;
+    border-radius: var(--card-border-radius);
+    background: var(--card-background);
+    box-shadow: var(--shadow-l1);
+}
+
+.widget.stats .stat-cell .v {
+    font-size: 1.9rem;
+    font-weight: 800;
+    line-height: 1.15;
+    color: var(--accent-color);
+}
+
+.widget.stats .stat-cell .l {
+    margin-top: 3px;
+    font-size: 1.15rem;
+    line-height: 1.35;
+    color: var(--card-text-color-tertiary);
+}
+
+/* ---------- 7. Widget: social links ---------- */
+.widget.social .widget--links {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: var(--card-border-radius);
+    background: var(--card-background);
+    box-shadow: var(--shadow-l1);
+}
+
+.widget.social .social-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 18px;
+    font-size: 1.4rem;
+    color: var(--card-text-color-main);
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.widget.social .social-link:not(:last-child) {
+    border-bottom: 1px solid var(--card-separator-color);
+}
+
+.widget.social .social-link svg {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    stroke-width: 1.8;
+    color: var(--accent-color);
+}
+
+.widget.social .social-link:hover {
+    background: var(--brand-soft);
+    color: var(--accent-color);
+}
+
+/* ---------- 8. Gallery ---------- */
+/* The theme styles `.article-content .gallery` as a full-bleed flex row and
+   stretches every `figure` to the width of the column, so the grid rules below
+   use the same specificity (and come later in the cascade) to take over. */
+.article-content .gallery {
+    position: static;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 14px;
+    margin: 24px 0 30px;
+    width: auto;
+}
+
+.article-content .gallery figure {
+    margin: 0;
+    width: auto;
+    overflow: hidden;
+    border-radius: var(--card-border-radius);
+    background: var(--card-background);
+    box-shadow: var(--shadow-l1);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.article-content .gallery figure + figure {
+    margin-left: 0;
+}
+
+.article-content .gallery figure:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-l3);
+}
+
+.article-content .gallery figure a {
+    display: block;
+    line-height: 0;
+}
+
+.article-content .gallery figure img {
+    display: block;
+    width: 100%;
+    height: 185px;
+    object-fit: cover;
+    transition: transform 0.45s ease;
+}
+
+.article-content .gallery figure:hover img {
+    transform: scale(1.06);
+}
+
+.article-content .gallery figcaption {
+    padding: 11px 14px;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    color: var(--card-text-color-secondary);
+}
+
+/* ---------- 9. Article / page polish ---------- */
+.article-content h2 {
+    margin-top: 1.4em;
+}
+
+.article-content table {
+    width: 100%;
+    font-size: 1.4rem;
+}
+
+.article-content table th {
+    background: var(--brand-soft);
+    color: var(--card-text-color-main);
+}
+
+/* CV definition list */
+.cv-list {
+    margin: 0 0 1.6em;
+}
+
+.cv-list dt {
+    font-weight: 700;
+    color: var(--card-text-color-main);
+}
+
+.cv-list dd {
+    margin: 0 0 0.8em;
+    color: var(--card-text-color-secondary);
+}
+
+/* ---------- 10. Left sidebar ---------- */
+.site-name a {
+    transition: color 0.2s ease;
+}
+
+.site-description {
+    line-height: 1.6;
+}
+
+/* ---------- 11. Motion ---------- */
+.home-hero,
+.home-stat,
+.article-content .gallery figure {
+    animation: rise-in 0.5s ease both;
+}
+
+.home-stat:nth-child(2) { animation-delay: 0.06s; }
+.home-stat:nth-child(3) { animation-delay: 0.12s; }
+.home-stat:nth-child(4) { animation-delay: 0.18s; }
+
+@keyframes rise-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home-hero,
+    .home-stat,
+    .article-content .gallery figure {
+        animation: none;
+    }
+
+    .btn:hover,
+    .home-stat:hover,
+    .article-content .gallery figure:hover {
+        transform: none;
+    }
+}
+
+/* ---------- 12. Article pages with a table of contents ---------- */
+/* Upstream hides the whole left sidebar (site name, menu, dark-mode switch) as soon as
+   a page renders a table of contents. The project template keeps the navigation, so the
+   upstream rule has to be undone here. */
+.article-page.has-toc .left-sidebar {
+    display: flex;
+}
+
+/* Between md and xl the upstream layout stacks the columns, which would push the
+   navigation above the article as a full-width block. Keep the row layout instead. */
+@media only screen and (min-width: 1024px) {
+    .article-page.has-toc .main-container {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+}
+
+/* Collapsible table of contents used on narrow screens, where the theme hides the
+   right-hand column. */
+.article-toc-inline {
+    display: block;
+    margin: 0 0 26px;
+    padding: 14px 20px;
+    border: 1px solid var(--card-separator-color);
+    border-radius: var(--card-border-radius);
+    background: var(--card-background);
+    box-shadow: var(--shadow-l1);
+}
+
+.article-toc-inline > summary {
+    cursor: pointer;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent-color);
+    list-style: none;
+}
+
+.article-toc-inline > summary::-webkit-details-marker {
+    display: none;
+}
+
+.article-toc-inline > summary::after {
+    content: " \25be";
+    font-size: 1.1rem;
+}
+
+.article-toc-inline[open] > summary::after {
+    content: " \25b4";
+}
+
+.article-toc-inline .widget--toc {
+    margin-top: 12px;
+}
+
+@media only screen and (min-width: 1280px) {
+    .article-toc-inline {
+        display: none;
+    }
+}

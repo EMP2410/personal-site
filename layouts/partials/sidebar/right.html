@@ -1,0 +1,29 @@
+{{/*
+  Project override of the Stack v2 right sidebar.
+
+  Upstream renders the table of contents *instead of* the widget column whenever a page
+  has a table of contents, because it hides the left sidebar at the same time. This
+  project keeps the left sidebar, so the table of contents is prepended to the widget
+  column instead of replacing it.
+*/}}
+{{ if .Site.Params.widgets.enabled }}
+    {{ $context := . }}
+    <aside class="sidebar right-sidebar sticky">
+        {{ if .Scratch.Get "hasTOC" }}
+            <section class="widget archives">
+                <div class="widget-icon">
+                    {{ partial "helper/icon" "hash" }}
+                </div>
+                <h2 class="widget-title section-title">{{ T "article.tableOfContents" }}</h2>
+
+                <div class="widget--toc">
+                    {{ .TableOfContents }}
+                </div>
+            </section>
+        {{ end }}
+
+        {{ range $widget := .Site.Params.widgets.enabled }}
+            {{ partial (printf "widget/%s" $widget) $context }}
+        {{ end }}
+    </aside>
+{{ end }}

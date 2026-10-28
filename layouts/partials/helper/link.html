@@ -1,0 +1,41 @@
+﻿{{/*
+  Resolve a site-internal path to a URL that carries the baseURL path prefix.
+
+  Hugo's `relURL` / `absURL` only resolve against the domain root, so on a site served
+  from a sub-path (baseURL = "https://example.com/personal-site/") they return
+  "/about/" instead of "/personal-site/about/" and every internal link breaks.
+  Resolving the target page and using its RelPermalink avoids that.
+
+  Accepts either a rendered path ("/about/", "/blog/") or a content path
+  ("/page/about"). Paths that do not resolve to a page (e.g. "search/index.json")
+  are prefixed with the baseURL path so they stay same-origin under a sub-path
+  deployment. Absolute URLs, protocol-relative URLs and anchors are returned as-is.
+
+  @param {string} . The path to resolve.
+  @returns {string} A URL safe to use in an href attribute.
+*/}}
+{{- $u := . -}}
+{{- $trimmed := strings.TrimSuffix "/" $u -}}
+{{- $candidates := slice $u $trimmed (printf "/page%s" $trimmed) (printf "page%s" $trimmed) -}}
+{{- $href := "" -}}
+{{- range $candidates -}}
+    {{- if not $href -}}
+        {{- with site.GetPage . -}}
+            {{- $href = .RelPermalink -}}
+        {{- end -}}
+    {{- end -}}
+{{- end -}}
+{{- if $href -}}
+    {{- $href -}}
+{{- else if or (hasPrefix $u "http://") (hasPrefix $u "https://") (hasPrefix $u "//") (hasPrefix $u "#") (hasPrefix $u "mailto:") -}}
+    {{- $u -}}
+{{- else -}}
+    {{- $base := strings.TrimSuffix "/" (urls.Parse site.BaseURL).Path -}}
+    {{- $bare := strings.TrimPrefix "/" $u -}}
+    {{- if and $base (not (hasPrefix $bare (strings.TrimPrefix "/" $base))) -}}
+        {{- printf "%s/%s" $base $bare -}}
+    {{- else -}}
+        {{- $u -}}
+    {{- end -}}
+{{- end -}}
+
