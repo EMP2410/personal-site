@@ -38,9 +38,3 @@ photograph to open it full size.
 {{< figure src="poster-1.jpg" caption="Conference poster I" >}}
 {{< figure src="poster-2.jpg" caption="Conference poster II" >}}
 {{< /gallery >}}
-
-## Contact
-
-{{< gallery >}}
-{{< figure src="contact.jpg" caption="Get in touch" >}}
-{{< /gallery >}}
