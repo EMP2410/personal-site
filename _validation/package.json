@@ -8,7 +8,8 @@
     "contrast": "node verify_b_contrast.mjs && node verify_b2_tertiary.mjs && node verify_d2_elements.mjs",
     "nav": "node verify_c_nav_toc.mjs && node verify_c2_interact.mjs",
     "regression": "node verify_e_regression.mjs",
-    "search": "node verify_f_search.mjs"
+    "search": "node verify_f_search.mjs",
+    "layout": "node verify_g_overlap.mjs && node verify_g2_overlap.mjs && node verify_g5_clipped.mjs && node verify_g6_navfit.mjs && node verify_g8_final.mjs && node verify_g7_pixdiff.mjs && python _g7diff.py && node verify_g9_scroll.mjs && python _g9diff.py"
   },
   "dependencies": {
     "playwright": "^1.64.1"

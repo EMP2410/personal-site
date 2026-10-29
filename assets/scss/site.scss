@@ -447,12 +447,35 @@ body {
     display: flex;
 }
 
-/* Between md and xl the upstream layout stacks the columns, which would push the
-   navigation above the article as a full-width block. Keep the row layout instead. */
-@media only screen and (min-width: 1024px) {
+/* Upstream stacks the columns whenever a page renders a table of contents: the
+   navigation is pushed *above* the article into a narrow 25% column. Combined with
+   `.left-sidebar { max-height: 100vh; overflow: visible }` the navigation then paints
+   itself over the article below. Keep the row layout from the md breakpoint upwards so
+   the navigation always sits beside the content, and restore the top padding that
+   upstream only applies from xl. */
+@media only screen and (min-width: 768px) {
     .article-page.has-toc .main-container {
         flex-direction: row;
         align-items: flex-start;
+    }
+
+    .article-page.has-toc .main {
+        padding-top: var(--main-top-padding);
+    }
+}
+
+/* The sticky sidebar is capped at `max-height: 100vh` while the theme lets the menu
+   scroll inside it (`overflow-y: auto`). Making the shrink behaviour explicit keeps
+   the menu inside the column on every engine, and clipping the column guarantees
+   that the navigation can never be painted outside its own area. */
+@media only screen and (min-width: 768px) {
+    .left-sidebar .menu {
+        min-height: 0;
+    }
+
+    .left-sidebar {
+        overflow-y: auto;
+        overscroll-behavior: contain;
     }
 }
 

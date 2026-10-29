@@ -7,6 +7,7 @@
 node_modules/
 _validation/node_modules/
 _validation/*.png
+_validation/shots/
 _validation/*_full.json
 _validation/out_*.json
 _validation/result*.json
