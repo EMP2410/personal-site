@@ -1,0 +1,12 @@
+{{- /*
+  Project override of the theme's empty `head/custom.html` hook.
+
+  The theme's own favicon support (`site.Params.favicon`) writes the value verbatim,
+  which breaks under a sub-path deployment such as
+  `https://emp2410.github.io/personal-site/`. Resolving the files through the link
+  helper keeps every icon same-origin and correctly prefixed.
+*/ -}}
+<link rel="icon" type="image/svg+xml" href="{{ partial "helper/link.html" "/favicon.svg" }}">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ partial "helper/link.html" "/favicon-32.png" }}">
+<link rel="shortcut icon" href="{{ partial "helper/link.html" "/favicon.ico" }}">
+<link rel="apple-touch-icon" sizes="180x180" href="{{ partial "helper/link.html" "/apple-touch-icon.png" }}">
